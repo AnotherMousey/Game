@@ -2,3 +2,4 @@
 dllFile
 *.exe
 SDL2
+obj
