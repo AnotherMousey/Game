@@ -5,7 +5,6 @@
 
 #define SIZE 9
 #define CELL_SIZE 50
-#define WINDOW_SIZE (SIZE * CELL_SIZE)
 
 void drawGrid(SDL_Renderer *renderer);
 
