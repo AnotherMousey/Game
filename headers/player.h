@@ -7,7 +7,7 @@ extern const int height;
 
 struct Player {
     int x = width/2, y = height/2;
-    int speed = 4;
+    int speed = 50;
 
     void reset() {
         x = width/2;
@@ -26,7 +26,6 @@ struct Player {
         if (keystate[SDL_SCANCODE_A]) dx -= speed;
         if (keystate[SDL_SCANCODE_D]) dx += speed;
 
-        // Normalize diagonal movement to prevent faster diagonal speed
         if (dx != 0 && dy != 0) {
             dx = (dx / abs(dx)) * (speed / 1.414);
             dy = (dy / abs(dy)) * (speed / 1.414);

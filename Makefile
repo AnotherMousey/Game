@@ -9,15 +9,15 @@ SRC = $(wildcard src/*.c) $(wildcard headers/*.c)
 OBJ = $(SRC:.c=.o)
 
 # Build target
-all: main
+all: main.exe
 
-main: $(OBJ)
-	$(CC) $(OBJ) -o main $(LDFLAGS) $(LIBS)
+main.exe: $(OBJ)
+	$(CC) $(OBJ) -o main.exe $(LDFLAGS) $(LIBS)
 
 # Compile .c files into .o
 %.o: %.c
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-# Clean generated files
+# Clean generated files (Windows-friendly)
 clean:
-	rm -f src/*.o headers/*.o main
+	del /Q src\*.o headers\*.o main.exe 2>nul || echo "No files to delete"

@@ -10,7 +10,7 @@ extern Player player;
 
 struct Enemy {
     int x, y;
-    int speed = 2;
+    int speed = 40;
 };
 
 std::vector<Enemy> enemies;

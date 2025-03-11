@@ -15,6 +15,9 @@ SDL_Renderer *renderer;
 Camera camera = Camera(width, height);
 Player player;
 
+SDL_Texture* grassTexture = nullptr;
+SDL_Texture* waterTexture = nullptr;
+
 void stopFlag(bool& running) {
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
@@ -27,8 +30,9 @@ void stopFlag(bool& running) {
 int main(int argc, char* argv[]) {
     if (!initSDL()) return -1;
 
-    grassTexture = loadTexture("grass.bmp");
-    waterTexture = loadTexture("water.bmp");
+    grassTexture = SDL_CreateTextureFromSurface(renderer, SDL_LoadBMP("Img/Tiles/tile_6_0.bmp"));
+    waterTexture = SDL_CreateTextureFromSurface(renderer, SDL_LoadBMP("Img/Tiles/tile_13_0.bmp"));
+
     generateMap();
 
     bool running = true;
@@ -40,7 +44,7 @@ int main(int argc, char* argv[]) {
         camera.reposition(player.x, player.y);
 
 
-        if (rand() % 100 < 2) spawnEnemy();  // Spawn enemies randomly
+        if (rand() % 100 < 2) spawnEnemy();
         updateEnemies();
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

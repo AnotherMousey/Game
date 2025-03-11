@@ -14,5 +14,10 @@ struct Camera {
     void reposition(int player_x, int player_y) {
         x = player_x - width/2;
         y = player_y - height/2;
+
+        if(x < 0) x = 0;
+        if(y < 0) y = 0;
+        if(x > 4000 - width) x = 4000 - width;
+        if(y > 4000 - height) y = 4000 - height;
     }
 };

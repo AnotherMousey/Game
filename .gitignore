@@ -4,3 +4,4 @@ dllFile
 SDL2
 obj
 *.o
+*.dll

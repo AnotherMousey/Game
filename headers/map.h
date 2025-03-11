@@ -13,7 +13,7 @@ const int NUM_TILES_X = MAP_WIDTH / TILE_SIZE;
 const int NUM_TILES_Y = MAP_HEIGHT / TILE_SIZE;
 
 enum TileType { GRASS, WATER };
-TileType map[NUM_TILES_Y][NUM_TILES_X];  // 2D Array for terrain
+TileType map[NUM_TILES_Y][NUM_TILES_X];
 
 extern const int width;
 extern const int height;
@@ -24,13 +24,13 @@ extern Player player;
 void generateMap() {
     for (int y = 0; y < NUM_TILES_Y; y++) {
         for (int x = 0; x < NUM_TILES_X; x++) {
-            map[y][x] = (rand() % 5 == 0) ? WATER : GRASS;  // 20% chance of water
+            map[y][x] = (rand() % 5 == 0) ? WATER : GRASS;
         }
     }
 }
 
-SDL_Texture* grassTexture = nullptr;
-SDL_Texture* waterTexture = nullptr;
+extern SDL_Texture* grassTexture;
+extern SDL_Texture* waterTexture;
 
 SDL_Texture* loadTexture(const char* path) {
     SDL_Surface* surface = SDL_LoadBMP(path);
@@ -59,7 +59,7 @@ void renderMap() {
 }
 
 void renderMinimap() {
-    SDL_Rect minimapRect = {10, height - MINIMAP_SIZE - 10, MINIMAP_SIZE, MINIMAP_SIZE };
+    SDL_Rect minimapRect = {10, height - MINIMAP_SIZE - 310, MINIMAP_SIZE, MINIMAP_SIZE };
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 200);
     SDL_RenderFillRect(renderer, &minimapRect);
 
@@ -73,7 +73,6 @@ void renderMinimap() {
         }
     }
 
-    // Render player position on minimap
     SDL_Rect playerRect = { minimapRect.x + (player.x / TILE_SIZE) * MINIMAP_TILE_SIZE,
                             minimapRect.y + (player.y / TILE_SIZE) * MINIMAP_TILE_SIZE, 4, 4 };
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
