@@ -1,6 +1,5 @@
 #pragma once
 #include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
 #include <iostream>
 
 extern const int width;
@@ -9,6 +8,7 @@ extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 
 bool initSDL() {
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cout << "SDL could not initialize";
         return false;

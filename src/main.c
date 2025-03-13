@@ -53,8 +53,9 @@ int main(int argc, char* argv[]) {
         renderMap();
         renderEnemies();
         renderMinimap();
+        player.renderHPBar();
 
-        SDL_Rect playerRect = {width / 2 - 16, height / 2 - 16, 32, 32 };
+        SDL_Rect playerRect = {player.x-camera.x, player.y-camera.y, 32, 32 };
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderFillRect(renderer, &playerRect);
 
