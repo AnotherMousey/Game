@@ -1,93 +1,100 @@
 #pragma once
-#include <iostream>
+#include <string>
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
+#include "text.h"
 
 extern const int width;
 extern const int height;
 extern SDL_Renderer* renderer;
 
-struct Player {
-    int x = width/2, y = height/2;
-    int speed = 20;
-    static const int maxhp = 100;
-    int hp = 100;
+enum playerState {
+    Idle,
+    Down,
+    Up,
+    Left,
+    Right
+};
 
-    const int HP_BAR_WIDTH = 300;
-    const int HP_BAR_HEIGHT = 30;
-    const int HP_BAR_X = 80;      
-    const int HP_BAR_Y = 20; 
+class Player {
+    private:
+        int x = width/2, y = height/2;
+        int speed = 20;
+        static const int maxhp = 100;
+        int hp = 100;
+        playerState state = Idle;
 
-    void reset() {
-        x = width/2;
-        y = height/2;
-        hp = maxhp;
-    }
+    public:
+        int getX() {return x;}
+        int getY() {return y;}
 
-    void increaseSpeed(int amount) {
-        speed += amount; 
-    }
+        int getHP() {return hp;}
+        void decreaseHP(int amount) {hp -= amount;}
+        void increaseHP(int amount) {hp += amount;}
 
-    void move(const bool* keystate) {
-        int dx = 0, dy = 0;
-    
-        if (keystate[SDL_SCANCODE_W]) dy -= speed;
-        if (keystate[SDL_SCANCODE_S]) dy += speed;
-        if (keystate[SDL_SCANCODE_A]) dx -= speed;
-        if (keystate[SDL_SCANCODE_D]) dx += speed;
-
-        if (dx != 0 && dy != 0) {
-            dx = (dx / abs(dx)) * (speed / 1.414);
-            dy = (dy / abs(dy)) * (speed / 1.414);
+        std::string getState() {
+            switch(state) {
+                case Idle: return "boy_down";
+                case Down: return "boy_down";
+                case Up: return "boy_up";
+                case Left: return "boy_left";
+                case Right: return "boy_right";
+                default: return "unknown state";
+            }
+        }
+        
+        void reset() {
+            x = width/2;
+            y = height/2;
+            hp = maxhp;
         }
 
-        x += dx;
-        y += dy;
+        void increaseSpeed(int amount) {
+            speed += amount; 
+        }
 
-        if(x < 0) x = 0;
-        if(y < 0) y = 0;
-        if(x >= 4000) x = 3999;
-        if(y >= 4000) y = 3999;
-    }
+        void move(const bool* keystate) {
+            int dx = 0, dy = 0;
+        
+            if (keystate[SDL_SCANCODE_W]) dy -= speed, state = Up;
+            else if (keystate[SDL_SCANCODE_S]) dy += speed, state = Down;
+            else if (keystate[SDL_SCANCODE_A]) dx -= speed, state = Left;
+            else if (keystate[SDL_SCANCODE_D]) dx += speed, state = Right;
+            else state = Idle;
 
+            if (dx != 0 && dy != 0) {
+                dx = (dx / abs(dx)) * (speed / 1.414);
+                dy = (dy / abs(dy)) * (speed / 1.414);
+            }
+
+            x += dx;
+            y += dy;
+
+            if(x < 0) x = 0;
+            if(y < 0) y = 0;
+            if(x >= 4000) x = 3999;
+            if(y >= 4000) y = 3999;
+        }
+        
+        void renderHPBar() {
+            TTF_Font* hpfont = TTF_OpenFont("Fonts/Commissioner-Medium.ttf", 24);
+            
+            const float barWidth = 400, barHeight = 35;
+            const float x = 60, y = 10;
+            float hpWidth = (hp / (float) maxhp) * barWidth;
+        
+            SDL_Color white = {255, 255, 255, 255};
+            renderText(hpfont, "HP:", 10, y, white);
+        
+            SDL_FRect bgRect = { x, y, barWidth, barHeight };
+            SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+            SDL_RenderFillRect(renderer, &bgRect);
+        
+            SDL_FRect hpRect = { x, y, hpWidth, barHeight };
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &hpRect);
     
-void renderHPBar() {
-    float hpPercent = (float) hp / maxhp;
-
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_Rect h1 = { 20, HP_BAR_Y, 8, 24 };   // Left line of H
-    SDL_Rect h2 = { 40, HP_BAR_Y, 8, 24 };   // Right line of H
-    SDL_Rect h3 = { 20, HP_BAR_Y + 10, 28, 6 }; // Middle bar of H
-    SDL_Rect p1 = { 60, HP_BAR_Y, 8, 24 };   // Left line of P
-    SDL_Rect p2 = { 60, HP_BAR_Y, 20, 8 };   // Top bar of P
-    SDL_Rect p3 = { 60, HP_BAR_Y + 12, 20, 8 }; // Mid bar of P
-
-    SDL_RenderFillRect(renderer, &h1);
-    SDL_RenderFillRect(renderer, &h2);
-    SDL_RenderFillRect(renderer, &h3);
-    SDL_RenderFillRect(renderer, &p1);
-    SDL_RenderFillRect(renderer, &p2);
-    SDL_RenderFillRect(renderer, &p3);
-
-    SDL_Rect bgRect = { HP_BAR_X, HP_BAR_Y, HP_BAR_WIDTH, HP_BAR_HEIGHT };
-    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
-    SDL_RenderFillRect(renderer, &bgRect);
-
-    SDL_Rect hpRect = { HP_BAR_X, HP_BAR_Y, (int)(HP_BAR_WIDTH * hpPercent), HP_BAR_HEIGHT };
-    if (hpPercent > 0.8)
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-    else if (hpPercent > 0.5)
-        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-    else if (hpPercent > 0.2)
-        SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
-    else
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &hpRect);
-
-    int numX = HP_BAR_X + HP_BAR_WIDTH + 20;
-    for (char digit : std::to_string(hp)) {
-        SDL_Rect numRect = { numX, HP_BAR_Y, 15, 24 };
-        SDL_RenderFillRect(renderer, &numRect);
-        numX += 15;
-    }
-}
+            std::string hpText = std::to_string(hp) + " / " + std::to_string(maxhp);
+            renderText(hpfont, hpText.c_str(), x + barWidth - 120, y, white);
+        }
 };

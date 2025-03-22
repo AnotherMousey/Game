@@ -7,7 +7,9 @@
 #include "../headers/map.h"
 #include "../headers/player.h"
 #include "../headers/camera.h"
-#include "../headers/enemies.h"
+#include "../headers/Entities/enemy_management.h"
+#include "../headers/Interaction/Damage/Entities.h"
+#include "../headers/animation.h"
 
 const int width = 1920;
 const int height = 1080;
@@ -46,6 +48,8 @@ int main(int argc, char* argv[]) {
 
     generateMap();
 
+    loadPlayerAnimation();
+
     bool running = true;
 
     while (running) {
@@ -53,10 +57,11 @@ int main(int argc, char* argv[]) {
 
         SDL_PumpEvents();
         player.move(SDL_GetKeyboardState(NULL));
-        camera.reposition(player.x, player.y);
+        camera.reposition(player.getX(), player.getY());
 
-        if (rand() % 100 < 2) spawnEnemy();
-        updateEnemies();
+        EnemyUpdate();
+        checkEnemyCollision();
+        if (rand() % 100 < 2) EnemySpawn();
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -66,9 +71,7 @@ int main(int argc, char* argv[]) {
         renderMinimap();
         player.renderHPBar();
 
-        SDL_FRect playerRect = {(float) player.x-camera.x, (float) player.y-camera.y, 32, 32 };
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_RenderFillRect(renderer, &playerRect);
+        renderPlayerAnimation(player.getState(), player.getX(), player.getY());
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);

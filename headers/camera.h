@@ -1,6 +1,5 @@
 #pragma once
 #include "SDL3/SDL.h"
-#include <iostream>
 
 struct Camera {
     int x = 0, y = 0;

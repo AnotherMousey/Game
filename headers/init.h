@@ -9,10 +9,16 @@ extern const int height;
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 
-bool initSDL() {
+extern TTF_Font* hpfont;
 
+bool initSDL() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         std::cout << "SDL could not initialize: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    if (!TTF_Init()) {
+        SDL_Log("Couldn't initialise SDL_ttf: %s\n", SDL_GetError());
         return false;
     }
 
