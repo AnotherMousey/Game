@@ -10,6 +10,7 @@
 #include "../headers/Entities/enemy_management.h"
 #include "../headers/Interaction/Damage/Entities.h"
 #include "../headers/animation.h"
+#include "../headers/Interaction/Damage/Player.h"
 
 const int width = 1920;
 const int height = 1080;
@@ -61,6 +62,7 @@ int main(int argc, char* argv[]) {
 
         EnemyUpdate();
         checkEnemyCollision();
+        checkPlayerAttackRange();
         if (rand() % 100 < 2) EnemySpawn();
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

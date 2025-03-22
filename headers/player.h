@@ -21,7 +21,8 @@ class Player {
         int x = width/2, y = height/2;
         int speed = 20;
         static const int maxhp = 100;
-        int hp = 100;
+        int hp = 100, dmg = 50;
+        int attack_range = 40;
         playerState state = Idle;
 
     public:
@@ -31,6 +32,14 @@ class Player {
         int getHP() {return hp;}
         void decreaseHP(int amount) {hp -= amount;}
         void increaseHP(int amount) {hp += amount;}
+
+        int getAttackRange() {return attack_range;}
+        void increaseAttackRange(int amount) {attack_range += amount;}
+
+        int getDMG() {return dmg;}
+        void increaseDMG(int amount) {dmg += amount;}
+
+        bool isDead() {return hp <= 0;}
 
         std::string getState() {
             switch(state) {

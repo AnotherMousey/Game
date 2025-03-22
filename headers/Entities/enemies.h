@@ -25,6 +25,8 @@ class Enemy {
         int getLastDamageTime() {return lastDamageTime;}
         void setLastDamageTime(int time) {lastDamageTime = time;}
 
+        void decreaseHP(int amount) {hp -= amount;}
+
         int getDMG() {return dmg;}
 
         bool isDead() {return hp <= 0;}

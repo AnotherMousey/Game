@@ -1,6 +1,5 @@
 #include <SDL3/SDL.h>
 #include <vector>
-#include "../../map.h"
 #include "../../player.h"
 #include "../../Entities/enemies.h"
 #include "../../Entities/enemy_management.h"
