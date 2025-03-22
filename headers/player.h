@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
 extern const int width;
 extern const int height;
@@ -18,7 +18,7 @@ struct Player {
         speed += amount; 
     }
 
-    void move(const Uint8* keystate) {
+    void move(const bool* keystate) {
         int dx = 0, dy = 0;
     
         if (keystate[SDL_SCANCODE_W]) dy -= speed;

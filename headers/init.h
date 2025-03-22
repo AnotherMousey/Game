@@ -1,6 +1,7 @@
 #pragma once
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
+#include<SDL3/SDL.h>
+#include<SDL3_ttf/SDL_ttf.h>
+#include<SDL3_image/SDL_image.h>
 #include <iostream>
 
 extern const int width;
@@ -10,21 +11,32 @@ extern SDL_Renderer *renderer;
 
 bool initSDL() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cout << "SDL could not initialize";
+        std::cout << "SDL could not initialize: " << SDL_GetError() << std::endl;
         return false;
     }
-    
-    window = SDL_CreateWindow("Vampire Survivors Clone", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
-    if (!window) return false;
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) return false;
+    window = SDL_CreateWindow("Vampire Survivors Clone", width, height, SDL_WINDOW_HIDDEN);
+    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+    SDL_SetWindowResizable(window, true);
+    SDL_ShowWindow(window);
+
+    renderer = SDL_CreateRenderer(window, nullptr); 
+    if (!renderer) {
+        std::cout << "Renderer could not be created: " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        return false;
+    }
 
     return true;
 }
 
 void cleanup() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
+        renderer = nullptr;
+    }
+    if (window) {
+        SDL_DestroyWindow(window);
+        window = nullptr;
+    }
 }

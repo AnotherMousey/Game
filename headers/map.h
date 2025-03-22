@@ -1,8 +1,15 @@
 #pragma once
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_image/SDL_image.h>
+#include "camera.h"
 #include <iostream>
-#include <SDL2/SDL.h>
-#include <camera.h>
-#include <player.h>
+
+extern const int width;
+extern const int height;
+extern SDL_Window *window;
+extern SDL_Renderer *renderer;
+extern Camera camera;
 
 const int MAP_WIDTH = 4000;
 const int MAP_HEIGHT = 4000;
@@ -15,11 +22,8 @@ const int NUM_TILES_Y = MAP_HEIGHT / TILE_SIZE;
 enum TileType { GRASS, WATER };
 TileType map[NUM_TILES_Y][NUM_TILES_X];
 
-extern const int width;
-extern const int height;
-extern SDL_Renderer* renderer;
-extern Camera camera;
-extern Player player;
+extern SDL_Texture* grassTexture;
+extern SDL_Texture* waterTexture;
 
 void generateMap() {
     for (int y = 0; y < NUM_TILES_Y; y++) {
@@ -27,16 +31,6 @@ void generateMap() {
             map[y][x] = (rand() % 5 == 0) ? WATER : GRASS;
         }
     }
-}
-
-extern SDL_Texture* grassTexture;
-extern SDL_Texture* waterTexture;
-
-SDL_Texture* loadTexture(const char* path) {
-    SDL_Surface* surface = SDL_LoadBMP(path);
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    SDL_FreeSurface(surface);
-    return texture;
 }
 
 void renderMap() {
@@ -49,32 +43,27 @@ void renderMap() {
         for (int x = startX; x <= endX; x++) {
             if (x < 0 || y < 0 || x >= NUM_TILES_X || y >= NUM_TILES_Y) continue;
 
-            SDL_Rect srcRect = { 0, 0, TILE_SIZE, TILE_SIZE };
-            SDL_Rect destRect = { x * TILE_SIZE - camera.x, y * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE };
+            SDL_FRect srcRect = { 0, 0, TILE_SIZE, TILE_SIZE };
+            SDL_FRect destRect = { (float) x * TILE_SIZE - camera.x, (float) y * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE };
 
             SDL_Texture* texture = (map[y][x] == GRASS) ? grassTexture : waterTexture;
-            SDL_RenderCopy(renderer, texture, &srcRect, &destRect);
+            SDL_RenderTexture(renderer, texture, &srcRect, &destRect);
         }
     }
 }
 
 void renderMinimap() {
-    SDL_Rect minimapRect = {10, height - MINIMAP_SIZE - 310, MINIMAP_SIZE, MINIMAP_SIZE };
+    SDL_FRect minimapRect = {10, (float) height - MINIMAP_SIZE - 310, MINIMAP_SIZE, MINIMAP_SIZE };
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 200);
     SDL_RenderFillRect(renderer, &minimapRect);
 
     for (int y = 0; y < NUM_TILES_Y; y++) {
         for (int x = 0; x < NUM_TILES_X; x++) {
-            SDL_Rect tileRect = { minimapRect.x + x * MINIMAP_TILE_SIZE, minimapRect.y + y * MINIMAP_TILE_SIZE,
+            SDL_FRect tileRect = { minimapRect.x + x * MINIMAP_TILE_SIZE, minimapRect.y + y * MINIMAP_TILE_SIZE,
                                   MINIMAP_TILE_SIZE, MINIMAP_TILE_SIZE };
 
             SDL_SetRenderDrawColor(renderer, (map[y][x] == GRASS) ? 34 : 0, (map[y][x] == GRASS) ? 139 : 0, 34, 255);
             SDL_RenderFillRect(renderer, &tileRect);
         }
     }
-
-    SDL_Rect playerRect = { minimapRect.x + (player.x / TILE_SIZE) * MINIMAP_TILE_SIZE,
-                            minimapRect.y + (player.y / TILE_SIZE) * MINIMAP_TILE_SIZE, 4, 4 };
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(renderer, &playerRect);
 }

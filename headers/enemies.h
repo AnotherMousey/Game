@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
-#include <SDL2/SDL.h>
-#include <player.h>
-#include <camera.h>
+#include <SDL3/SDL.h>
+#include "player.h"
+#include "camera.h"
 
 extern SDL_Renderer* renderer;
 extern Camera camera;
@@ -36,8 +36,8 @@ void updateEnemies() {
 
 void renderEnemies() {
     for (auto& enemy : enemies) {
-        SDL_Rect rect = { enemy.x - camera.x, enemy.y - camera.y, 32, 32 };
+        SDL_FRect rectF = { (float) enemy.x - camera.x, (float) enemy.y - camera.y, 32, 32 };
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(renderer, &rect);
+        SDL_RenderFillRect(renderer, &rectF);
     }
 }
