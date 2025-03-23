@@ -1,3 +1,4 @@
+#pragma once
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
@@ -6,7 +7,6 @@
 #include <string>
 
 extern SDL_Renderer* renderer;
-
 std::map<std::string, std::vector<SDL_Texture*>> animations;
 
 void loadAnimation(std::string name, int numFrames) {
@@ -21,25 +21,13 @@ void loadAnimation(std::string name, int numFrames) {
     animations[name] = frames;
 }
 
-void loadPlayerAnimation() {
+void loadAllAnimation() {
     loadAnimation("boy_up", 2);
     loadAnimation("boy_down", 2);
     loadAnimation("boy_left", 2);
     loadAnimation("boy_right", 2);
-}
-
-void renderPlayerAnimation(std::string name, int x, int y) {
-    static int lastFrameTime = 0;
-    static int frame = 0;
-    const int delay = 200;
-
-    int currentTime = SDL_GetTicks();
-    if (currentTime > lastFrameTime + delay) {
-        frame++;
-        frame%=animations[name].size();
-        lastFrameTime = currentTime;
-    }
-
-    SDL_FRect dstRect = {(float) x-camera.x, (float) y-camera.y, 32, 32};
-    SDL_RenderTexture(renderer, animations[name][frame], nullptr, &dstRect);
+    loadAnimation("boy_attack_up", 2);
+    loadAnimation("boy_attack_down", 2);
+    loadAnimation("boy_attack_left", 2);
+    loadAnimation("boy_attack_right", 2);
 }

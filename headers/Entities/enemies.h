@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <cmath>
 #include <SDL3/SDL.h>
 #include "../player.h"
 #include "../camera.h"
@@ -15,6 +15,7 @@ class Enemy {
         int hp, maxhp;
         int dmg;
         int lastDamageTime = 0;
+        bool Damaged = false;
 
     public:
         Enemy(int x, int y, int speed, int maxhp, int dmg) : x(x), y(y), speed(speed), maxhp(maxhp), hp(maxhp), dmg(dmg) {}
@@ -31,10 +32,13 @@ class Enemy {
 
         bool isDead() {return hp <= 0;}
 
+        bool isDamaged() {return Damaged;}
+        void switchDamaged() {Damaged = !Damaged;}
+
         void move() {
             int dx = player.getX() - x;
             int dy = player.getY() - y;
-            float length = SDL_sqrt(dx * dx + dy * dy);
+            float length = sqrt(dx * dx + dy * dy);
             if (length > 0) {
                 x += dx / length * speed;
                 y += dy / length * speed;

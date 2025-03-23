@@ -7,18 +7,25 @@
 #include "enemies.h"
 
 std::vector <Enemy> enemies;
-
 extern SDL_Renderer* renderer;
 extern Player player;
 
 void EnemyUpdate() {
     for (int i = 0; i < enemies.size(); i++) {
         enemies[i].move();
-        enemies[i].render();
     }
 }
 
 void EnemySpawn() {
+    static int lastSpawnTime = 0;
+    const int spawnTime = 5000;
+    int currentTime = SDL_GetTicks();
+    if(currentTime > lastSpawnTime + spawnTime) {
+        lastSpawnTime = currentTime;
+    } else {
+        return;
+    }
+
     int minDistance = 400;
     int maxDistance = 800;
 
@@ -38,8 +45,8 @@ void EnemySpawn() {
 }
 
 void renderEnemies() {
-    for (int i = 0; i < enemies.size(); i++) {
-        enemies[i].render();
+    for (auto enemy : enemies) {
+        enemy.render();
     }
 }
 

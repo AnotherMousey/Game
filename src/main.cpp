@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 
     generateMap();
 
-    loadPlayerAnimation();
+    loadAllAnimation();
 
     bool running = true;
 
@@ -62,7 +62,6 @@ int main(int argc, char* argv[]) {
 
         EnemyUpdate();
         checkEnemyCollision();
-        checkPlayerAttackRange();
         if (rand() % 100 < 2) EnemySpawn();
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -71,9 +70,8 @@ int main(int argc, char* argv[]) {
         renderMap();
         renderEnemies();
         renderMinimap();
+        playerAnimationAndAttack();
         player.renderHPBar();
-
-        renderPlayerAnimation(player.getState(), player.getX(), player.getY());
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);

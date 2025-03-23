@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <set>
+#include <cmath>
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include "text.h"
@@ -23,6 +25,7 @@ class Player {
         static const int maxhp = 100;
         int hp = 100, dmg = 50;
         int attack_range = 40;
+        int attackHaste = 1000, attackSpeed = 1000;
         playerState state = Idle;
 
     public:
@@ -39,15 +42,21 @@ class Player {
         int getDMG() {return dmg;}
         void increaseDMG(int amount) {dmg += amount;}
 
+        int getAttackHaste() {return attackHaste;}
+        void increaseAttackHaste(int amount) {attackHaste += amount;}
+
+        int getAttackSpeed() {return attackSpeed;}
+        void increaseAttackSpeed(int amount) {attackSpeed += amount;}
+
         bool isDead() {return hp <= 0;}
 
         std::string getState() {
             switch(state) {
-                case Idle: return "boy_down";
-                case Down: return "boy_down";
-                case Up: return "boy_up";
-                case Left: return "boy_left";
-                case Right: return "boy_right";
+                case Idle: return "down";
+                case Down: return "down";
+                case Up: return "up";
+                case Left: return "left";
+                case Right: return "right";
                 default: return "unknown state";
             }
         }
@@ -69,7 +78,6 @@ class Player {
             else if (keystate[SDL_SCANCODE_S]) dy += speed, state = Down;
             else if (keystate[SDL_SCANCODE_A]) dx -= speed, state = Left;
             else if (keystate[SDL_SCANCODE_D]) dx += speed, state = Right;
-            else state = Idle;
 
             if (dx != 0 && dy != 0) {
                 dx = (dx / abs(dx)) * (speed / 1.414);
