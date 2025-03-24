@@ -24,7 +24,7 @@ class Player {
         int speed = 20;
         static const int maxhp = 100;
         int hp = 100, dmg = 50;
-        int attack_range = 40;
+        int attack_range = 20;
         int attackHaste = 1000, attackSpeed = 1000;
         playerState state = Idle;
 
@@ -37,7 +37,6 @@ class Player {
         void increaseHP(int amount) {hp += amount;}
 
         int getAttackRange() {return attack_range;}
-        void increaseAttackRange(int amount) {attack_range += amount;}
 
         int getDMG() {return dmg;}
         void increaseDMG(int amount) {dmg += amount;}

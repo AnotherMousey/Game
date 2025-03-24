@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <iostream>
 #include <SDL3/SDL.h>
 #include "../player.h"
 #include "../camera.h"
@@ -9,7 +10,7 @@ extern Camera camera;
 extern Player player;
 
 class Enemy {
-    private:
+    protected:
         int x, y;
         int speed;
         int hp, maxhp;
@@ -45,9 +46,5 @@ class Enemy {
             }
         }
 
-        void render() {
-            SDL_FRect rectF = { (float) x - camera.x, (float) y - camera.y, 32, 32 };
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            SDL_RenderFillRect(renderer, &rectF);
-        }
+        virtual void render() {}
 };

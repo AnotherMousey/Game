@@ -5,14 +5,15 @@
 #include "../map.h"
 #include "../player.h"
 #include "enemies.h"
+#include "Mini_monster/mushroom.h"
 
-std::vector <Enemy> enemies;
+std::vector <Enemy*> enemies;
 extern SDL_Renderer* renderer;
 extern Player player;
 
 void EnemyUpdate() {
     for (int i = 0; i < enemies.size(); i++) {
-        enemies[i].move();
+        enemies[i]->move();
     }
 }
 
@@ -41,20 +42,20 @@ void EnemySpawn() {
     if(randX >= 4000) randX = 3999;
     if(randY >= 4000) randY = 3999;
 
-    enemies.push_back(Enemy(randX, randY, 2, 50, 5));
+    enemies.push_back(new mushroom(randX, randY, 2, 50, 5));
 }
 
 void renderEnemies() {
     for (auto enemy : enemies) {
-        enemy.render();
+        enemy->render();
     }
 }
 
 void renderEnemiesOnMiniMap() {
-    for(auto enemy : enemies) {
+    for(auto enemy: enemies) {
         SDL_FRect enemyRect = { 
-            (float) 10 + (enemy.getX() / 40) * 5,
-            (float) height - 200 - 310 + (enemy.getY() / 40) * 5, 
+            (float) 10 + (enemy->getX() / 40) * 5,
+            (float) height - 200 - 310 + (enemy->getY() / 40) * 5, 
             4, 4 
         };
     
