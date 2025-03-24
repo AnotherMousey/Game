@@ -36,14 +36,3 @@ bool initSDL() {
 
     return true;
 }
-
-void cleanup() {
-    if (renderer) {
-        SDL_DestroyRenderer(renderer);
-        renderer = nullptr;
-    }
-    if (window) {
-        SDL_DestroyWindow(window);
-        window = nullptr;
-    }
-}

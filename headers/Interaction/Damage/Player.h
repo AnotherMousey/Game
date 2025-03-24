@@ -15,7 +15,6 @@
 extern SDL_Renderer* renderer;
 extern Camera camera;
 extern Player player;
-extern const int entitySize;
 extern std::vector <Enemy*> enemies;
 extern std::map<std::string, std::vector<SDL_Texture*>> animations;
 
@@ -50,7 +49,7 @@ void playerAnimationAndAttack() {
         }
     }
 
-    float pwidth = entitySize, pheight = entitySize;
+    float pwidth = player.getSize(), pheight = player.getSize();
     float posx = player.getX() - camera.x, posy = player.getY() - camera.y;
 
     if(name == "player/boy_attack_" + player.getState()) {
@@ -58,13 +57,13 @@ void playerAnimationAndAttack() {
             pwidth = pwidth*2;
             pheight = pheight;
             if(player.getState() == "left") {
-                posx -= entitySize;
+                posx -= player.getSize();
             }
         } else {
             pwidth = pwidth;
             pheight = pheight*2;
             if(player.getState() == "up") {
-                posy -= entitySize;
+                posy -= player.getSize();
             }
         }
     }
@@ -76,24 +75,24 @@ void playerAnimationAndAttack() {
         for(int i = 0; i < enemies.size(); i++) {
             if(enemies[i]->isDamaged()) continue;
             float dx = enemies[i]->getX() - player.getX();
-            float dy = enemies[i]->getY() - player.getY();
+            float dy = enemies[i]->getY() - player.getY() - player.getSize() + enemies[i]->getSize();
             
             bool check = false;
             if(player.getState() == "left") {
-                if(dx < 0 && dx > -entitySize - player.getAttackRange() && dy < entitySize && dy > -entitySize) {
+                if(dx < 0 && dx > (-player.getSize() - enemies[i]->getSize())/2 - player.getAttackRange() && dy < player.getSize() && dy > -player.getSize()) {
                     check = true;
                 }
                 
             } else if(player.getState() == "right") {
-                if(dx > 0 && dx < entitySize + player.getAttackRange() && dy < entitySize && dy > -entitySize) {
+                if(dx > 0 && dx < (player.getSize() + enemies[i]->getSize())/2 + player.getAttackRange() && dy < player.getSize() && dy > -player.getSize()) {
                     check = true;
                 }
             } else if(player.getState() == "up") {
-                if(dy < 0 && dy > -entitySize - player.getAttackRange() && dx < entitySize && dx > -entitySize) {
+                if(dy < 0 && dy > (-player.getSize() - enemies[i]->getSize())/2 - player.getAttackRange() && dx < player.getSize() && dx > -player.getSize()) {
                     check = true;
                 }
             } else {
-                if(dy > 0 && dy < entitySize + player.getAttackRange() && dx < entitySize && dx > -entitySize) {
+                if(dy > 0 && dy < (player.getSize() + enemies[i]->getSize())/2 + player.getAttackRange() && dx < player.getSize() && dx > -player.getSize()) {
                     check = true;
                 }
             }

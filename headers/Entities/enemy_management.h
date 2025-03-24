@@ -27,8 +27,8 @@ void EnemySpawn() {
         return;
     }
 
-    int minDistance = 400;
-    int maxDistance = 800;
+    int minDistance = 200;
+    int maxDistance = 400;
 
     int distance = minDistance + (rand() % (maxDistance - minDistance)); 
 
@@ -39,8 +39,8 @@ void EnemySpawn() {
 
     if(randX < 0) randX = 0;
     if(randY < 0) randY = 0;
-    if(randX >= 4000) randX = 3999;
-    if(randY >= 4000) randY = 3999;
+    if(randX >= 2000) randX = 1999;
+    if(randY >= 2000) randY = 1999;
 
     enemies.push_back(new mushroom(randX, randY, 2, 50, 5));
 }
@@ -54,8 +54,8 @@ void renderEnemies() {
 void renderEnemiesOnMiniMap() {
     for(auto enemy: enemies) {
         SDL_FRect enemyRect = { 
-            (float) 10 + (enemy->getX() / 40) * 5,
-            (float) height - 200 - 310 + (enemy->getY() / 40) * 5, 
+            (float) 20.5 + (enemy->getX() / 40) * 5,
+            (float) height - 200 - 50 + (enemy->getY() / 40) * 5, 
             4, 4 
         };
     

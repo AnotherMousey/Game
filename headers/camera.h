@@ -18,7 +18,7 @@ struct Camera {
 
         if(x < 0) x = 0;
         if(y < 0) y = 0;
-        if(x > 4000 - width) x = 4000 - width;
-        if(y > 4000 - height) y = 4000 - height;
+        if(x > 2000 - width) x = 2000 - width;
+        if(y > 2000 - height) y = 2000 - height;
     }
 };

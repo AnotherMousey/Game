@@ -11,10 +11,10 @@
 #include "../headers/Interaction/Damage/Entities.h"
 #include "../headers/animation.h"
 #include "../headers/Interaction/Damage/Player.h"
+#include "../headers/clean.h"  
 
 const int width = 1920;
 const int height = 1080;
-const int entitySize = 48;
 
 SDL_Window *window;
 SDL_Renderer *renderer;

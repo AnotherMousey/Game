@@ -12,7 +12,7 @@ extern Player player;
 void checkEnemyCollision() {
     for (int i = 0; i < enemies.size(); i++) {
         SDL_FRect playerRect = { (float) player.getX(), (float) player.getY(), 32, 32 };
-        SDL_FRect enemyRect = { (float) enemies[i]->getX(), (float) enemies[i]->getY(), 32, 32 };
+        SDL_FRect enemyRect = { (float) enemies[i]->getX() - player.getSize() + enemies[i]->getSize(), (float) enemies[i]->getY() - player.getSize() + enemies[i]->getSize(), 32, 32 };
 
         if (SDL_HasRectIntersectionFloat(&playerRect, &enemyRect)) {
             int currentTime = SDL_GetTicks();

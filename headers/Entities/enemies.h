@@ -16,10 +16,11 @@ class Enemy {
         int hp, maxhp;
         int dmg;
         int lastDamageTime = 0;
+        int size;
         bool Damaged = false;
 
     public:
-        Enemy(int x, int y, int speed, int maxhp, int dmg) : x(x), y(y), speed(speed), maxhp(maxhp), hp(maxhp), dmg(dmg) {}
+        Enemy(int x, int y) : x(x), y(y) {}
 
         int getX() {return x;}
         int getY() {return y;}
@@ -36,14 +37,17 @@ class Enemy {
         bool isDamaged() {return Damaged;}
         void switchDamaged() {Damaged = !Damaged;}
 
+        int getSize() {return size;}
+
         void move() {
-            int dx = player.getX() - x;
-            int dy = player.getY() - y;
+            int dx = player.getX() - x + player.getSize() - size;
+            int dy = player.getY() - y + player.getSize() - size;
             float length = sqrt(dx * dx + dy * dy);
             if (length > 0) {
                 x += dx / length * speed;
                 y += dy / length * speed;
             }
+
         }
 
         virtual void render() {}

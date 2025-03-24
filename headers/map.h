@@ -13,8 +13,8 @@ extern SDL_Renderer *renderer;
 extern Player player;
 extern Camera camera;
 
-const int map_width = 4000;
-const int map_height = 4000;
+const int map_width = 2000;
+const int map_height = 2000;
 const int tile = 40;
 const int minimap_size = 200;
 const int minimap_tile = minimap_size / tile;
@@ -55,7 +55,7 @@ void renderMap() {
 }
 
 void renderMinimap() {
-    SDL_FRect minimapRect = {10, (float) height - minimap_size - 310, minimap_size, minimap_size };
+    SDL_FRect minimapRect = {10, (float) height - minimap_size - 60, minimap_size, minimap_size };
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 200);
     SDL_RenderFillRect(renderer, &minimapRect);
 

@@ -8,7 +8,6 @@
 
 extern const int width;
 extern const int height;
-extern const int entitySize;
 extern SDL_Renderer* renderer;
 
 enum playerState {
@@ -21,12 +20,13 @@ enum playerState {
 
 class Player {
     private:
-        int x = width/2, y = height/2;
-        int speed = 20;
+        int x = 1000, y = 1000;
+        int speed = 5;
         static const int maxhp = 100;
         int hp = 100, dmg = 50;
         int attack_range = 20;
         int attackHaste = 1000, attackSpeed = 1000;
+        int playerSize = 48;
         playerState state = Idle;
 
     public:
@@ -49,6 +49,8 @@ class Player {
         void increaseAttackSpeed(int amount) {attackSpeed += amount;}
 
         bool isDead() {return hp <= 0;}
+
+        int getSize() {return playerSize;}
 
         std::string getState() {
             switch(state) {
@@ -89,8 +91,8 @@ class Player {
 
             if(x < 0) x = 0;
             if(y < 0) y = 0;
-            if(x >= 4000 - entitySize) x = 3999 - entitySize;
-            if(y >= 4000 - entitySize) y = 3999 - entitySize;
+            if(x >= 2000 - playerSize) x = 1999 - playerSize;
+            if(y >= 2000 - playerSize) y = 1999 - playerSize;
         }
         
         void renderHPBar() {
@@ -98,7 +100,7 @@ class Player {
             
             const float barWidth = 400, barHeight = 35;
             const float x = 60, y = 10;
-            float hpWidth = (hp / (float) maxhp) * barWidth;
+            float hpWidth = (std::max(hp, 0) / (float) maxhp) * barWidth;
         
             SDL_Color white = {255, 255, 255, 255};
             renderText(hpfont, "HP:", 10, y, white);
