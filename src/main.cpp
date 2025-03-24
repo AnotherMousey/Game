@@ -14,6 +14,7 @@
 
 const int width = 1920;
 const int height = 1080;
+const int entitySize = 48;
 
 SDL_Window *window;
 SDL_Renderer *renderer;

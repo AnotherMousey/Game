@@ -8,6 +8,7 @@
 #include "../../camera.h"
 
 extern SDL_Renderer* renderer;
+extern const int entitySize;
 extern std::map<std::string, std::vector<SDL_Texture*>> animations;
 extern Camera camera;
 
@@ -16,11 +17,14 @@ class mushroom: public Enemy {
         mushroom(int x, int y, int speed, int hp, int dmg): Enemy(x, y, speed, hp, dmg) {}
 
         void render() override {
-            std::cout << "rendering mushroom" << std::endl;
-
             int delayTime = 150;
             int frame = (SDL_GetTicks() / delayTime) % 8;
-            SDL_FRect dstrect = {(float) x - camera.x, (float) y - camera.y, 64, 64};
-            SDL_RenderTexture(renderer, animations["mushroom/mushroom_run"][frame], nullptr, &dstrect);
+            SDL_FRect dstrect = {(float) x - camera.x, (float) y - camera.y, (float) entitySize*2, (float) entitySize*2};
+            int dx = x - player.getX();
+            if(dx >= 0) {
+                SDL_RenderTexture(renderer, animations["mushroom/mushroom_run"][frame], nullptr, &dstrect);
+            } else {
+                SDL_RenderTextureRotated(renderer, animations["mushroom/mushroom_run"][frame], nullptr, &dstrect, 0, nullptr, SDL_FLIP_HORIZONTAL);
+            }
         }
 };

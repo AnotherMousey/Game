@@ -1,6 +1,8 @@
 #pragma once
 #include "SDL3/SDL.h"
 
+extern const int entitySize;
+
 struct Camera {
     int x = 0, y = 0;
     int width, height;

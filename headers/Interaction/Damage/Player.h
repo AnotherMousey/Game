@@ -15,6 +15,7 @@
 extern SDL_Renderer* renderer;
 extern Camera camera;
 extern Player player;
+extern const int entitySize;
 extern std::vector <Enemy*> enemies;
 extern std::map<std::string, std::vector<SDL_Texture*>> animations;
 
@@ -49,21 +50,21 @@ void playerAnimationAndAttack() {
         }
     }
 
-    float pwidth = 32, pheight = 32;
+    float pwidth = entitySize, pheight = entitySize;
     float posx = player.getX() - camera.x, posy = player.getY() - camera.y;
 
     if(name == "player/boy_attack_" + player.getState()) {
         if(player.getState() == "left" || player.getState() == "right") {
-            pwidth = 64;
-            pheight = 32;
+            pwidth = pwidth*2;
+            pheight = pheight;
             if(player.getState() == "left") {
-                posx -= 32;
+                posx -= entitySize;
             }
         } else {
-            pwidth = 32;
-            pheight = 64;
+            pwidth = pwidth;
+            pheight = pheight*2;
             if(player.getState() == "up") {
-                posy -= 32;
+                posy -= entitySize;
             }
         }
     }
@@ -79,20 +80,20 @@ void playerAnimationAndAttack() {
             
             bool check = false;
             if(player.getState() == "left") {
-                if(dx < 0 && dx > -32 - player.getAttackRange() && dy < 32 && dy > -32) {
+                if(dx < 0 && dx > -entitySize - player.getAttackRange() && dy < entitySize && dy > -entitySize) {
                     check = true;
                 }
                 
             } else if(player.getState() == "right") {
-                if(dx > 0 && dx < 32 + player.getAttackRange() && dy < 32 && dy > -32) {
+                if(dx > 0 && dx < entitySize + player.getAttackRange() && dy < entitySize && dy > -entitySize) {
                     check = true;
                 }
             } else if(player.getState() == "up") {
-                if(dy < 0 && dy > -32 - player.getAttackRange() && dx < 32 && dx > -32) {
+                if(dy < 0 && dy > -entitySize - player.getAttackRange() && dx < entitySize && dx > -entitySize) {
                     check = true;
                 }
             } else {
-                if(dy > 0 && dy < 32 + player.getAttackRange() && dx < 32 && dx > -32) {
+                if(dy > 0 && dy < entitySize + player.getAttackRange() && dx < entitySize && dx > -entitySize) {
                     check = true;
                 }
             }

@@ -8,6 +8,7 @@
 
 extern const int width;
 extern const int height;
+extern const int entitySize;
 extern SDL_Renderer* renderer;
 
 enum playerState {
@@ -88,8 +89,8 @@ class Player {
 
             if(x < 0) x = 0;
             if(y < 0) y = 0;
-            if(x >= 4000) x = 3999;
-            if(y >= 4000) y = 3999;
+            if(x >= 4000 - entitySize) x = 3999 - entitySize;
+            if(y >= 4000 - entitySize) y = 3999 - entitySize;
         }
         
         void renderHPBar() {

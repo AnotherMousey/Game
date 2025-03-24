@@ -19,7 +19,7 @@ void EnemyUpdate() {
 
 void EnemySpawn() {
     static int lastSpawnTime = 0;
-    const int spawnTime = 5000;
+    const int spawnTime = 2000;
     int currentTime = SDL_GetTicks();
     if(currentTime > lastSpawnTime + spawnTime) {
         lastSpawnTime = currentTime;
